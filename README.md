@@ -28,6 +28,53 @@ The output is Counter which is 4 bit in size.
 
 ## Fig 1: 4 Bit Up/Down Counter
 
+### counter.v
+```
+`timescale 1ns / 1 ns
+module counter(clk,m,rst,count);
+input clk,m,rst;
+output reg [3:0] count;
+always@(posedge clk or negedge rst)
+begin
+if (!rst)
+count=0;
+else if(m)
+count=count+1;
+else
+count=count-1;
+end
+endmodule
+```
+### counter_test.v
+```
+`timescale 1ns / 1ns
+module counter_test;
+reg clk,rst,m;
+wire [3:0] count;
+initial
+begin
+clk=0;
+rst=0;#5;
+rst=1;
+end
+initial
+begin
+m=1;
+#160 m=0;
+end
+
+counter counter1 (clk,m,rst, count);
+
+always #5 clk=~clk;
+ 
+initial $monitor("Time=%t rst=%b clk=%b count=%b" , $time,rst,clk,count);
+
+initial
+#320 $finish;
+
+endmodule
+```
+
 ## Creating a Work space :
 
 	Create a folder in your name (Note: Give folder name without any space) and Create a new sub-Directory name it as Exp2 or counter_design for the Design and open a terminal from the Sub-Directory.
@@ -188,4 +235,7 @@ It contains statements that map logical library names to their physical director
 ![Screenshot (62)](https://github.com/user-attachments/assets/8094e4b9-2e16-4654-8c76-01c2addbc6b8)
 
 ## Fig 11: Simulation Waveform Window
+
+### Result
+The functionality of a 4-bit_up-down asynchronous reset counter was successfully verified using a test bench and simulated with the nclaunch tool.
 
